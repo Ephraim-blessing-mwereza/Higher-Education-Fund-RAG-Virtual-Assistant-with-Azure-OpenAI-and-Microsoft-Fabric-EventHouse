@@ -1,0 +1,64 @@
+{
+  "QueryHash": "cb3754b03b189075",
+  "ExecutionTime": 0.0065433,
+  "resource_usage": {
+    "cache": {
+      "shards": {
+        "hot": {
+          "hitbytes": 1362027,
+          "missbytes": 0,
+          "retrievebytes": 0
+        },
+        "cold": {
+          "hitbytes": 0,
+          "missbytes": 0,
+          "retrievebytes": 0
+        },
+        "bypassbytes": 0
+      }
+    },
+    "cpu": {
+      "user": "00:00:00",
+      "kernel": "00:00:00",
+      "total cpu": "00:00:00",
+      "breakdown": {
+        "query execution": "00:00:00",
+        "query planning": "00:00:00"
+      }
+    },
+    "memory": {
+      "peak_per_node": 9077840
+    },
+    "network": {
+      "inter_cluster_total_bytes": 1972819,
+      "cross_cluster_total_bytes": 0
+    }
+  },
+  "input_dataset_statistics": {
+    "extents": {
+      "total": 1,
+      "scanned": 1,
+      "scanned_min_datetime": "2025-04-07T13:33:46.1578810Z",
+      "scanned_max_datetime": "2025-04-07T13:33:46.1578810Z"
+    },
+    "rows": {
+      "total": 405,
+      "scanned": 405
+    },
+    "rowstores": {
+      "scanned_rows": 0,
+      "scanned_values_size": 0
+    },
+    "shards": {
+      "queries_generic": 1,
+      "queries_specialized": 0
+    }
+  },
+  "dataset_statistics": [
+    {
+      "table_row_count": 150,
+      "table_size": 1970307
+    }
+  ],
+  "cross_cluster_resource_usage": {}
+}
