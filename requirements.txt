@@ -1,1 +1,8 @@
-
+openai==0.27.8
+notebookutils==3.4.1-20240309.2
+requests==2.31.0
+ipython==8.14.0
+pyspark==3.4.1.5.3.20230713
+msrest==0.7.1
+Pillow==10.0.1
+numpy==1.24.3
