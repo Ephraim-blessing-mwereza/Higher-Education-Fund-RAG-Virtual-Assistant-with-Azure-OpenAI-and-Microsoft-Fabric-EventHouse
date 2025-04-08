@@ -82,12 +82,16 @@ Every time we want to search for answers from our knowledge base, we will:
 
 ![project_dataflow](images/image14.png "")
 <li>Let’s run our notebook</li>
+
+![project_dataflow](images/image15.png "")
 <ol>
 
 <p>Let’s check the data was saved to our Vector Database.
 Go to the Eventhouse and run this query</p>
 
-![project_dataflow](images/image15.png "")
+![project_dataflow](images/image19.png "")
+
+
 <p>Output</p>
 
 ![project_dataflow](images/image16.png "")
