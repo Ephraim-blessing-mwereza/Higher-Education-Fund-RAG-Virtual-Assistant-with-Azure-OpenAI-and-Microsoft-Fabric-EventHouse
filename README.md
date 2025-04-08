@@ -72,15 +72,16 @@ Every time we want to search for answers from our knowledge base, we will:
 
 <p>Grab your Azure openAI endpoint and secret key and paste it in the notebook, replace your models deployment names if needed.</p>
 
-![project_dataflow](images/image13.png "")
 <p> Put your working azure OpenAI endpoint and secret key where needed </p>
 
 ![project_dataflow](images/image14.png "")
 <ol>
+
+![project_dataflow](images/image20.png "")
 <li>Get the Eventhouse URI and paste it as “KUSTO_URI” in the notebook</li>
 <li>Connect the notebook to the Lakehouse <li>
 
-![project_dataflow](images/image14.png "")
+![project_dataflow](images/image13.png "")
 <li>Let’s run our notebook</li>
 
 ![project_dataflow](images/image15.png "")
