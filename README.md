@@ -76,6 +76,8 @@ When a user asks a question:
 
 ### Step 5: Create "hefEmbeddings" table
 Click on `HEF_EventHouse_queryset` and run the command below:
+![Create Table Command](images/image10.png)
+![KQL Notebook](images/image11.png)
 ![Create Table](images/image9.png)
 
 ### Step 6: Import and Configure the Notebook
