@@ -1,125 +1,122 @@
-<!DOCTYPE html>
-<html>
-<body>
-<h1> RAG-Powered Virtual Assistant for the Higher Education Fund (HEF) using Azure OpenAI and Microsoft Fabric Eventhouse </h1>    
-<h2>Overview</h2>
+# RAG-Powered Virtual Assistant for the Higher Education Fund (HEF) using Azure OpenAI and Microsoft Fabric Eventhouse
 
-<p>RAG-Powered Virtual Assistant for the Higher Education Fund (HEF) is an AI-driven solution built using Azure OpenAI and Microsoft Fabric Eventhouse to streamline access to critical information on higher education funding in Kenya.</p>
+## 📚 Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [OpenAI Models Used](#openai-models-used)
+- [How it Works](#how-it-works)
+  - [Processing the Files and Indexing the Embeddings](#processing-the-files-and-indexing-the-embeddings)
+  - [RAG - Getting Answers](#rag---getting-answers)
+- [Setup](#setup)
+- [🧪 Sample Output](#-sample-output)
+- [📊 Conclusion](#conclusion)
+- [📄 License](#license)
+- [🤝 Contributing](#contributing)
 
-<p>This application is a Retrieval-Augmented Generation (RAG) virtual assistant designed to help students, guardians, and other stakeholders easily access accurate and up-to-date information about Kenya's new Higher Education Fund (HEF) model. The assistant draws from an enriched knowledge base comprising FAQs and official documents from KUCCPS, HELB, and the Universities Fund, along with supplementary data extracted from their official websites.</p>
+## 🌍 Overview
+The **RAG-Powered Virtual Assistant for the Higher Education Fund (HEF)** is an AI-driven solution built using **Azure OpenAI** and **Microsoft Fabric Eventhouse** to streamline access to critical information on higher education funding in Kenya.
 
-<p>With the introduction of the New Funding Model (NFM) in May 2023, many applicants are unfamiliar with the application processes, eligibility criteria, and the roles of the three institutions involved. The assistant bridges this knowledge gap by offering 24/7 conversational support, eliminating the need for time-consuming calls, emails, or in-person visits to the single UF office in Nairobi.</p>
+It leverages **Retrieval-Augmented Generation (RAG)** to help students, guardians, and stakeholders easily access accurate, up-to-date information about Kenya's **Higher Education Fund (HEF)** model. The assistant uses FAQs and official data from **KUCCPS**, **HELB**, and the **Universities Fund**, supplemented with content from their official websites.
 
-<p>By automating responses to common queries, the virtual assistant not only improves the student experience but also reduces the workload on overwhelmed human support staff, ensuring equitable, timely, and consistent access to information—especially for students in remote areas.</p>
+With the introduction of the **New Funding Model (NFM)** in May 2023, many applicants are unfamiliar with the new processes. The assistant bridges this knowledge gap by offering 24/7 conversational support, reducing dependency on emails, calls, and physical office visits.
 
-<h2>Prerequisites</h2>
-To follow this guide, you will need to ensure that you have access to the following services and have the necessary credentials and keys set up.
-<ol>
-<ul>Microsoft Fabric.</ul>
-<ul>Azure OpenAI Studio to manage and deploy OpenAI models.</ul>
-</ol>
+## 🚀 Features
+- Instant, 24/7 support for Higher Education Fund inquiries
+- Uses trusted data from KUCCPS, UF, and HELB
+- Reduces workload on support staff
+- Eliminates the need for travel to major cities for information
+- Ensures inclusive access for remote and underserved communities
+- Built using cutting-edge Azure OpenAI and Microsoft Fabric technologies
 
-<h2>Open AI models used:</h2>
+## ✅ Prerequisites
+Make sure you have access to the following services and credentials:
+- Microsoft Fabric account
+- Azure OpenAI Studio (model deployment permissions)
+- Deployed Azure OpenAI resource (gpt & embeddings)
+- Microsoft Fabric workspace setup with permissions
 
-<ul>
-    <li>Model: gpt-4o-kenya-hack </li>
-    <li>Model: text-embedding-ada-002-kenya-hack</li>
-</ul>
+## 🧬 OpenAI Models Used
+- `gpt-4o-kenya-hack` — For generating natural language answers
+- `text-embedding-ada-002-kenya-hack` — For creating vector embeddings from documents
 
-<h2> How it works </h2>
-<h3> Processing the files and indexing the embeddings </h3>
+## 💡 How it Works
 
-![project_dataflow](images/image1.png "")
+### 🔹 Processing the Files and Indexing the Embeddings
 
-<p>
-<strong> create the embeddings and then save them into our Vector Database – Fabric Eventhouse</strong>
-<ol>
-    <li> Read files from Fabric Lakehouse</li>
-    <li> Create embeddings from the text using Azure OpenAI ada Embeddings model</li>
-    <li> Save the text and embeddings in our Fabric Eventhouse DB</li>
-</ol>
-</p>
+![File Processing Flow](images/image1.png)
 
-<h3> RAG - Getting answers </h3>
+This process involves preparing the data and saving vector embeddings into Fabric Eventhouse:
+1. Read PDF documents from the Fabric Lakehouse
+2. Generate embeddings using the `ada-002` model
+3. Store both the text and embeddings in the Eventhouse DB
 
-![project_dataflow](images/image2.png "")
-<p>
-Every time we want to search for answers from our knowledge base, we will:
-<ol>
-    <li> Create the embeddings for the question and search our Fabric Eventhouse for the answers, using Similarity search</li>
-    <li> Combining the question and the retrieved answers from our Vector Database, we will call Azure OpenAI GPT4 model to get “natural language” answer.</li>
-   
-</ol>
-</p>
+### 🔹 RAG - Getting Answers
 
-<h3>Setup</h3>
-<p>Create a Fabric Workspace</p>
+![Answer Flow](images/image2.png)
 
-![project_dataflow](images/image3.png "")
+When a user asks a question:
+1. The question is converted into an embedding and searched against the Vector DB in Fabric Eventhouse
+2. Retrieved content is combined with the question and passed to GPT-4o to generate a natural language response
 
-<p>Create a lakehouse Workspace "Hef-lakehouse"</p>
+## 📅 Setup
 
-![project_dataflow](images/image4.png "")
+### Step 1: Create a Fabric Workspace
+![Workspace](images/image3.png)
 
-<p> Click on "Upload" to Upload pdfs from local storage to the "Hef-lakehouse"</p>
+### Step 2: Create a Lakehouse Workspace "hef-lakehouse"
+![Lakehouse](images/image4.png)
 
-![project_dataflow](images/image6.png "")
+### Step 3: Upload PDFs from local machine to the Lakehouse
+![Upload PDFs](images/image6.png)
 
-<p>Create an Eventhouse DB called “hef_eventhouse”</p>
+### Step 4: Create an Eventhouse DB named "hef_eventhouse"
+![Eventhouse DB](images/image7.png)
+![Eventhouse DB Details](images/image8.png)
 
-![project_dataflow](images/image7.png "")
+### Step 5: Create "hefEmbeddings" table
+Click on `HEF_EventHouse_queryset` and run the command below:
+![Create Table](images/image9.png)
 
-![project_dataflow](images/image8.png "")
+### Step 6: Import and Configure the Notebook
+- Import `Creating embeddings and ingesting into Eventhouse.ipynb`
+- Add your Azure OpenAI endpoint and key
+- Replace model deployment names if needed
 
-<p>Click on the "HEF_EventHouse_queryset" to create the “hefEmbeddings” table.</p>
+![Notebook](images/image12.png)
+![API Setup](images/image14.png)
 
-![project_dataflow](images/image9.png "")
+### Step 7: Set KUSTO_URI and Connect Notebook to Lakehouse
+![Set URI](images/image20.png)
+![Connect Lakehouse](images/image13.png)
 
-<p>Paste the following command and run it on the kql notebook</p>
+### Step 8: Run Notebook and Test Ingestion
+![Run Notebook](images/image15.png)
 
-![project_dataflow](images/image10.png "")
+Verify data storage:
+![Query Vector DB](images/image19.png)
+![Output](images/image16.png)
 
-![project_dataflow](images/image11.png "")
+### Step 9: Run Final Cells and Ask Questions
+Try asking a sample question in the final notebook cell.
+![Ask Question](images/image18.png)
 
-<p>Import our notebook "Creating embeddings and ingesting into Eventhouse.ipynb" in the workspace</p>
+## 🧪 Sample Output
 
-![project_dataflow](images/image12.png "")
+**Example Input:**
+> "How do I apply for funding under the new HEF model?"
 
-<p>Grab your Azure openAI endpoint and secret key and paste it in the notebook, replace your models deployment names if needed.</p>
+**AI Response:**
+> "To apply for HEF funding under the New Funding Model (NFM), students must complete the Means Testing Instrument (MTI) via the HEF portal. This ensures funding is allocated based on financial need..."
 
-<p> Put your working azure OpenAI endpoint and secret key where needed </p>
+_See visual output below:_
+![Sample Output](images/image17.png)
 
-![project_dataflow](images/image14.png "")
-<ol>
+## 📊 Conclusion
+This documentation outlines the architecture, setup, and flow of a RAG-powered assistant tailored to Kenya's HEF system. It offers a scalable solution for delivering reliable and accessible support using AI and cloud technologies.
 
-![project_dataflow](images/image20.png "")
-<li>Get the Eventhouse URI and paste it as “KUSTO_URI” in the notebook</li>
-<li>Connect the notebook to the Lakehouse <li>
+## 📄 License
+This project is licensed under the [MIT License](LICENSE).
 
-![project_dataflow](images/image13.png "")
-<li>Let’s run our notebook</li>
-
-![project_dataflow](images/image15.png "")
-<ol>
-
-<p>Let’s check the data was saved to our Vector Database.
-Go to the Eventhouse and run this query</p>
-
-![project_dataflow](images/image19.png "")
-
-
-<p>Output</p>
-
-![project_dataflow](images/image16.png "")
-
-<p> Go back to the note book and run the remaining cells</p>
-<p>Try to pass your sample question to the app in the last cell. Any question regarding higher education funding in kenya</p>
-
-![project_dataflow](images/image18.png "")
-<p>Sample Output</p>
-
-![project_dataflow](images/image17.png "")
-
-
-<p>This documentation provides an overview of the RAG-Powered Virtual Assistant for the Higher Education Fund (HEF), outlining its architecture, components, objects, and pipeline activities. It serves as a comprehensive guide for understanding the solution's design and functionality.</p>
-
+## 🤝 Contributing
+We welcome contributions! Fork this repository, make your changes, and submit a pull request. For major changes, please open an issue first to discuss what you'd like to do.
