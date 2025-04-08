@@ -15,24 +15,26 @@
 
 <h2> How it works </h2>
 <h3> Processing the files and indexing the embeddings </h3>
+
 ![project_dataflow](images/image1.png "")
 
 <p>
 <strong> create the embeddings and then save them into our Vector Database – Fabric Eventhouse</strong>
 <ol>
-    <li>1- Read files from Fabric Lakehouse</li>
-    <li>2- Create embeddings from the text using Azure OpenAI ada Embeddings model</li>
-    <li>3- Save the text and embeddings in our Fabric Eventhouse DB</li>
+    <li> Read files from Fabric Lakehouse</li>
+    <li> Create embeddings from the text using Azure OpenAI ada Embeddings model</li>
+    <li> Save the text and embeddings in our Fabric Eventhouse DB</li>
 </ol>
 </p>
 
 <h3> RAG - Getting answers </h3>
+
 ![project_dataflow](images/image2.png "")
 <p>
 Every time we want to search for answers from our knowledge base, we will:
 <ol>
-    <li>4- Create the embeddings for the question and search our Fabric Eventhouse for the answers, using Similarity search</li>
-    <li>5- Combining the question and the retrieved answers from our Vector Database, we will call Azure OpenAI GPT4 model to get “natural language” answer.</li>
+    <li> Create the embeddings for the question and search our Fabric Eventhouse for the answers, using Similarity search</li>
+    <li> Combining the question and the retrieved answers from our Vector Database, we will call Azure OpenAI GPT4 model to get “natural language” answer.</li>
    
 </ol>
 </p>
