@@ -13,251 +13,93 @@
     <li>Model: text-embedding-ada-002-kenya-hack, Version: vision-preview for images</li>
 </ul>
 
-![project_dataflow](images/project_dataflow.png "Project dataflow")
+<h2> How it works </h2>
+<h3> Processing the files and indexing the embeddings </h3>
+![project_dataflow](images/image1.png "")
 
-<h2>Components</h2>
-
+<p>
+<strong> create the embeddings and then save them into our Vector Database – Fabric Eventhouse</strong>
 <ol>
-    <li><strong>External Source Integration</strong>
-        <ul>
-            <li><strong>Client-Side Storage:</strong> External storage on the client side where files and images are stored for analysis.</li>
-        </ul>
-    </li>
-    <li><strong>Microsoft Fabric Lakehouse - PIInovatorsLH</strong>
-        <ul>
-            <li><strong>Bronze Zone</strong>
-                <ul>
-                    <li><strong>Raw Section:</strong>
-                        <ul>
-                            <li><strong>Unprocessed:</strong>
-                                <ul>
-                                    <li><strong>Files:</strong> Raw data for files lands here.</li>
-                                    <li><strong>Images:</strong> Raw data for images lands here.</li>
-                                </ul>
-                            </li>
-                            <li><strong>Processed:</strong>
-                                <ul>
-                                    <li><strong>Files:</strong> Processed files are moved here.</li>
-                                    <li><strong>Images:</strong> Processed images are moved here.</li>
-                                </ul>
-                            </li>
-                            <li><strong>Failed:</strong>
-                                <ul>
-                                    <li><strong>Files:</strong> Files with processing errors are moved here.</li>
-                                    <li><strong>Images:</strong> Images with processing errors are moved here.</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li><strong>Silver Zone</strong>
-                        <ul>
-                            <li><strong>Delta Tables:</strong> Populated with transformed data, including metadata, classification, sender data, category, subject, PII data, masked PII data, sender analysis, and document analysis.</li>
-                        </ul>
-                    </li>
-                    <li><strong>Gold Zone</strong>
-                        <ul>
-                            <li><strong>Analytical Data Preparation:</strong>
-                                <ul>
-                                    <li>Parsed JSON strings from Silver Delta Tables are structured into a fixed schema in the Gold Zone for Power BI reports.</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </li>
-    <li><strong>Objects</strong>
-        <ul>
-            <li><strong>Notebooks</strong>
-                <ol>
-                    <li><strong>00 Create Delta Tables:</strong>
-                        <ul>
-                            <li>Creates all the delta tables used in the project.</li>
-                        </ul>
-                    </li>
-                    <li><strong>01 Insert Documents for Analysis:</strong>
-                        <ul>
-                            <li>Stores metadata for documents.</li>
-                        </ul>
-                    </li>
-                    <li><strong>02 Ingestion Data from Text Documents and PII Analysis:</strong>
-                        <ul>
-                            <li>Reads, detects, and stores PII data from text into Silver Zone Delta Tables.</li>
-                        </ul>
-                    </li>
-                    <li><strong>03 Ingestion Data from Image Documents and PII Analysis:</strong>
-                        <ul>
-                            <li>Extracts text from images, reads, detects, and stores PII data from text into Silver Zone Delta Tables.</li>
-                        </ul>
-                    </li>
-                    <li><strong>04 Load and Prepare Data in Gold Zone:</strong>
-                        <ul>
-                            <li>Parses stored JSON strings from Silver Delta Tables into a fixed schema structure in the Gold Zone Delta Table.</li>
-                        </ul>
-                    </li>
-                </ol>
-            </li>
-            <li><strong>Delta Tables</strong>
-                <ul>
-                    <li><strong>documents:</strong> Metadata for documents.</li>
-                    <li><strong>classification:</strong> Stores responses in JSON string format for document complain classification.</li>
-                    <li><strong>sender_data:</strong> Stores responses in JSON string format for sender information.</li>
-                    <li><strong>category:</strong> Stores responses in JSON string format for document categorization.</li>
-                    <li><strong>subject:</strong> Stores responses in JSON string format for document subject identification.</li>
-                    <li><strong>pii_data:</strong> Stores responses in JSON string format for PII identification.</li>
-                    <li><strong>mask_pii_data:</strong> Stores responses in JSON string format for masked PII data.</li>
-                    <li><strong>sender_analysis:</strong> Stores sender data for reporting in the Gold Zone.</li>
-                    <li><strong>document_analysis:</strong> Stores document data for reporting in the Gold Zone.</li>
-                </ul>
-            </li>
-            <li><strong>Pipelines</strong>
-                <ul>
-                    <li><strong>pl-adls-external-source:</strong></li>
-                </ul>
-            </li>
-        </ul>
-    </li>
+    <li>1- Read files from Fabric Lakehouse</li>
+    <li>2- Create embeddings from the text using Azure OpenAI ada Embeddings model</li>
+    <li>3- Save the text and embeddings in our Fabric Eventhouse DB</li>
 </ol>
+</p>
 
-![datafactory pipeline](images/pipeline1.png "Datafactory pipeline")
-![datafactory pipeline](images/pipeline2.png "Datafactory pipeline")
-![datafactory pipeline](images/pipeline3.png "Datafactory pipeline")
-![datafactory pipeline](images/pipeline4.png "Datafactory pipeline")
-<h2>Pipeline Activities</h2>
-
+<h3> RAG - Getting answers </h3>
+![project_dataflow](images/image2.png "")
+<p>
+Every time we want to search for answers from our knowledge base, we will:
 <ol>
-    <li><strong>Get Document Names</strong>
-        <ul>
-            <li><strong>GetMetadata Activity:</strong> Provides a list of child items from the external source.</li>
-        </ul>
-    </li>
-    <li><strong>ForEachDocumentName</strong>
-        <ul>
-            <li><strong>ForEach Activity:</strong> Takes child items one by one from the GetMetadata activity.</li>
-        </ul>
-    </li>
+    <li>4- Create the embeddings for the question and search our Fabric Eventhouse for the answers, using Similarity search</li>
+    <li>5- Combining the question and the retrieved answers from our Vector Database, we will call Azure OpenAI GPT4 model to get “natural language” answer.</li>
+   
 </ol>
+</p>
 
-<h2>Variables</h2>
+<h3>Setup</h3>
+<p>Create a Fabric Workspace</p>
 
-<ul>
-    <li><strong>varDocumentName:</strong> Document name (without extension).</li>
-    <li><strong>varDocumentExtension:</strong> Document extension (.txt, .csv, .png, .jpg, .jpeg).</li>
-    <li><strong>varDocumentNameFinal:</strong> Concatenates Document Name with a timestamp for the current UTC date.</li>
-    <li><strong>VarBronzePathFileOrImage:</strong> Indicates if the document is a file or an image for document path.</li>
-    <li><strong>VarDocumentId:</strong> Creates DocumentID (GUID).</li>
-</ul>
+![project_dataflow](images/image3.png "")
 
-<h2>Copy from External Source</h2>
+<p>Create a lakehouse Workspace "Hef-lakehouse"</p>
 
-<ul>
-    <li><strong>CopyData Activity:</strong>
-        <ul>
-            <li>Copies data from the external source to the Bronze Zone (Raw/Unprocessed/VarBronzePathFileOrImage).</li>
-        </ul>
-    </li>
-</ul>
+![project_dataflow](images/image4.png "")
 
-<h2>Insert Document</h2>
+<p> Click on "Upload" to Upload pdfs from local storage to the "Hef-lakehouse"</p>
 
-<ul>
-    <li><strong>Notebook Activity:</strong>
-        <ul>
-            <li>Executes the [01 Insert Documents for Analysis] notebook.</li>
-        </ul>
-    </li>
-</ul>
+![project_dataflow](images/image6.png "")
 
-<h2>Check Extension</h2>
+<p>Create an Eventhouse DB called “hef_eventhouse”</p>
 
-<ul>
-    <li><strong>IfCondition Activity:</strong>
-        <ul>
-            <li>Checks the file extension and runs the corresponding notebook for files or images.</li>
-        </ul>
-    </li>
-</ul>
+![project_dataflow](images/image7.png "")
 
-<h2>Analyze PII Files</h2>
+![project_dataflow](images/image8.png "")
 
-<ul>
-    <li><strong>Notebook Activity:</strong>
-        <ul>
-            <li>Executes the [02 Ingestion Data from Text Documents and PII Analysis] notebook.</li>
-        </ul>
-    </li>
-</ul>
+<p>Click on the "HEF_EventHouse_queryset" to create the “hefEmbeddings” table.</p>
 
-<h2>Copy to Processed Files</h2>
+![project_dataflow](images/image9.png "")
 
-<ul>
-    <li><strong>CopyData Activity:</strong>
-        <ul>
-            <li>Moves files from Unprocessed to Processed folder.</li>
-        </ul>
-    </li>
-</ul>
+<p>Paste the following command and run it on the kql notebook</p>
 
-<h2>Prepare Data for Gold Zone Files</h2>
+![project_dataflow](images/image10.png "")
 
-<ul>
-    <li><strong>Notebook Activity:</strong>
-        <ul>
-            <li>Executes the [04 Load and Prepare Data in Gold Zone] notebook.</li>
-        </ul>
-    </li>
-</ul>
+![project_dataflow](images/image11.png "")
 
-<h2>Copy to Failed Files</h2>
+<p>Import our notebook "Creating embeddings and ingesting into Eventhouse.ipynb" in the workspace</p>
 
-<ul>
-    <li><strong>CopyData Activity:</strong>
-        <ul>
-            <li>Moves data from Unprocessed/Files to Failed/Files in case of processing errors.</li>
-        </ul>
-    </li>
-</ul>
+![project_dataflow](images/image12.png "")
 
-<h2>Analyze PII Images</h2>
+<p>Grab your Azure openAI endpoint and secret key and paste it in the notebook, replace your models deployment names if needed.</p>
 
-<ul>
-    <li><strong>Notebook Activity:</strong>
-        <ul>
-            <li>Executes the [03 Ingestion Data from Image Documents and PII Analysis] notebook.</li>
-        </ul>
-    </li>
-</ul>
+![project_dataflow](images/image13.png "")
+<p> Put your working azure OpenAI endpoint and secret key where needed </p>
 
-<h2>Copy to Processed Images</h2>
+![project_dataflow](images/image14.png "")
+<ol>
+<li>Get the Eventhouse URI and paste it as “KUSTO_URI” in the notebook</li>
+<li>Connect the notebook to the Lakehouse <li>
 
-<ul>
-    <li><strong>CopyData Activity:</strong>
-        <ul>
-            <li>Moves images from Unprocessed to Processed folder.</li>
-        </ul>
-    </li>
-</ul>
+![project_dataflow](images/image14.png "")
+<li>Let’s run our notebook</li>
+<ol>
 
-<h2>Prepare Data for Gold Zone Images</h2>
+<p>Let’s check the data was saved to our Vector Database.
+Go to the Eventhouse and run this query</p>
 
-<ul>
-    <li><strong>Notebook Activity:</strong>
-        <ul>
-            <li>Executes the [04 Load and Prepare Data in Gold Zone] notebook.</li>
-        </ul>
-    </li>
-</ul>
+![project_dataflow](images/image15.png "")
+<p>Output</p>
 
-<h2>Copy to Failed Images</h2>
+![project_dataflow](images/image16.png "")
 
-<ul>
-    <li><strong>CopyData Activity:</strong>
-        <ul>
-            <li>Moves data from Unprocessed/Images to Failed/Images in case of processing errors.</li>
-        </ul>
-    </li>
-</ul>
+<p> Go back to the note book and run the remaining cells</p>
+<p>Try to pass your sample question to the app in the last cell. Any question regarding higher education funding in kenya</p>
+
+![project_dataflow](images/image18.png "")
+<p>Sample Output</p>
+
+![project_dataflow](images/image17.png "")
+
 
 <p>This documentation provides an overview of the PIInovators cloud-native data solution, outlining its architecture, components, objects, and pipeline activities. It serves as a comprehensive guide for understanding the solution's design and functionality.</p>
 
