@@ -121,6 +121,5 @@ Go to the Eventhouse and run this query</p>
 ![project_dataflow](images/image17.png "")
 
 
-<p>This documentation provides an overview of the PIInovators cloud-native data solution, outlining its architecture, components, objects, and pipeline activities. It serves as a comprehensive guide for understanding the solution's design and functionality.</p>
+<p>This documentation provides an overview of the RAG-Powered Virtual Assistant for the Higher Education Fund (HEF), outlining its architecture, components, objects, and pipeline activities. It serves as a comprehensive guide for understanding the solution's design and functionality.</p>
 
-<ul>
