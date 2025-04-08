@@ -4,13 +4,26 @@
 <h1> RAG-Powered Virtual Assistant for the Higher Education Fund (HEF) using Azure OpenAI and Microsoft Fabric Eventhouse </h1>    
 <h2>Overview</h2>
 
-<p>PIInovators is a cloud-native data solution developed in Microsoft Fabric, integrating OpenAI for document analysis, particularly for detecting Personal Identification Information (PII) in files and images. The solution classifies documents into complaint and non-complaint categories, further categorizing them based on predefined types (Delivery, Personnel, Online, Continual, Communication). The solution is based on a medallion architecture where data is stored in three zones (Bronze, Silver, Gold) within Microsoft Fabric Lakehouse. Subsequently, the data is prepared for analytical use in Power BI reports.</p>
+<p>RAG-Powered Virtual Assistant for the Higher Education Fund (HEF) is an AI-driven solution built using Azure OpenAI and Microsoft Fabric Eventhouse to streamline access to critical information on higher education funding in Kenya.</p>
+
+<p>This application is a Retrieval-Augmented Generation (RAG) virtual assistant designed to help students, guardians, and other stakeholders easily access accurate and up-to-date information about Kenya's new Higher Education Fund (HEF) model. The assistant draws from an enriched knowledge base comprising FAQs and official documents from KUCCPS, HELB, and the Universities Fund, along with supplementary data extracted from their official websites.</p>
+
+<p>With the introduction of the New Funding Model (NFM) in May 2023, many applicants are unfamiliar with the application processes, eligibility criteria, and the roles of the three institutions involved. The assistant bridges this knowledge gap by offering 24/7 conversational support, eliminating the need for time-consuming calls, emails, or in-person visits to the single UF office in Nairobi.</p>
+
+<p>By automating responses to common queries, the virtual assistant not only improves the student experience but also reduces the workload on overwhelmed human support staff, ensuring equitable, timely, and consistent access to information—especially for students in remote areas.</p>
+
+<h2>Prerequisites</h2>
+To follow this guide, you will need to ensure that you have access to the following services and have the necessary credentials and keys set up.
+<ol>
+<ul>Microsoft Fabric.</ul>
+<ul>Azure OpenAI Studio to manage and deploy OpenAI models.</ul>
+</ol>
 
 <h2>Open AI models used:</h2>
 
 <ul>
-    <li>Model: gpt-4o-kenya-hack, Version: 1106-preview for files</li>
-    <li>Model: text-embedding-ada-002-kenya-hack, Version: vision-preview for images</li>
+    <li>Model: gpt-4o-kenya-hack </li>
+    <li>Model: text-embedding-ada-002-kenya-hack</li>
 </ul>
 
 <h2> How it works </h2>
